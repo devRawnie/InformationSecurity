@@ -35,25 +35,35 @@ class Caesar:
         return ans
                 
     def encrypt(self, message):
-        op =[]
-        for x in message:
-            oldchar = ord(x)
-            newchar = self.shiftForward(oldchar) if oldchar > 96 else self.shiftForward(oldchar, False)
-            op.append(chr(newchar))
-        return "".join(op)
-
-    def decryptMessage(self, message):
-        op =[]
-        for x in message:
-            oldchar = ord(x)
-            newchar = self.shiftBackward(oldchar) if oldchar > 96 else self.shiftBackward(oldchar,False)
-            op.append(chr(newchar))
-        return "".join(op)
-
+        message = message.split()
+        msg = []
+        for word in message:
+            op =[]
+            for x in word:
+                oldchar = ord(x)
+                newchar = self.shiftForward(oldchar) if oldchar > 96 else self.shiftForward(oldchar, False)
+                op.append(chr(newchar))
+            msg.append("".join(op))
+        
+        return " ".join(msg)
+    
+    def decrypt(self, message):
+        message = message.split()
+        msg = []
+        for word in message:
+            op =[]
+            for x in word:
+                oldchar = ord(x)
+                newchar = self.shiftBackward(oldchar) if oldchar > 96 else self.shiftBackward(oldchar, False)
+                op.append(chr(newchar))
+            msg.append("".join(op))
+       
+        return " ".join(msg)
 
 if __name__ == '__main__':
-    inp = input("Enter the text to be encrypted: ").split()
+    inp = input("Enter the text to be encrypted: ")
     k = int(input("Enter the key: "))
-    # output = [decryptMessage(word, k) for word in inp]
-
+    cipher = Caesar(k)
+    enc = Caesar.encrypt(message=inp)
+    print(enc)
     # print(*output, sep=" ")
