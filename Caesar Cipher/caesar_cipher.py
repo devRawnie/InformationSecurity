@@ -1,8 +1,7 @@
 class Caesar:
     key = None
     def __init__(self, key=3):
-        if key is not None:
-            self.key = key
+        self.key = key
 
     def shiftForward(self, char,lower=True,key=None):
         ans = None
