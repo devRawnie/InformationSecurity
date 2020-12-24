@@ -28,17 +28,19 @@ class Vignere:
             print("Error: Invalid text passed")
         else:
             cipher = [self.shift(x) for x in message.split()]
-            return " ".join(cipher)
+            print("Original Message: ", message)
+            print("Encrypted Message: ", " ".join(cipher))
 
     def decrypt(self, message):
         if message is None or len(message) == 0:
             print("Error: Invalid text passed")
         else:
             cipher = [self.shift(x, True) for x in message.split()]
-            return " ".join(cipher)
+            print("Encrypted Message: ", message)
+            print("Decrypted Message: ", " ".join(cipher))
 
 if __name__ == "__main__":
     ob = Vignere()
-    result = ob.encrypt("CRYPTOGRAPHY IS LOVE")
+    ob.encrypt("CRYPTOGRAPHY IS LOVE")
     # result = ob.decrypt("AYNMRVVOYWWV")
-    print(result)
+    
