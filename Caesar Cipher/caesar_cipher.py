@@ -1,6 +1,6 @@
 class Caesar:
     key = None
-    def __init__(self, key=None):
+    def __init__(self, key=3):
         if key is not None:
             self.key = key
 

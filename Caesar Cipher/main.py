@@ -4,8 +4,8 @@ from caesar_forward_backward import CaesarFB
 
 def implementCaesar():
     inp = input("Enter the text to be encrypted: ")
-    key = int(input("Enter the key: "))
-    cipher = Caesar(key)
+    # key = int(input("Enter the key: "))   ## Default is 3
+    cipher = Caesar()
     print("Original Text: {}\nEncrypted Text: {}".format(inp, cipher.encrypt(inp)))
 
 def implementCaesarFB():
