@@ -41,7 +41,7 @@ class HillCipher:
     def encrypt(self, message):
         message = message.replace(" ", "").lower()
         if len(message) % self.size != 0:
-            print("Error: Length of the entered message should a multiple of the length of key")
+            print("Error: Length of the entered message should be a multiple of the length of key")
             return
         else:
             components = [message[i:i+self.size] for i in range(0, len(message), self.size)]
