@@ -1,4 +1,5 @@
 import numpy as np
+from math import pow
 
 class HillCipher:
     '''
@@ -16,32 +17,26 @@ class HillCipher:
         self.key = np.zeros((self.size, self.size), dtype=np.int32)
         for i in range(self.size):
             self.key[i] = [ord(j)-97 for j in key[i*self.size:self.size*(i+1)]]
-        print(self.key)
 
-    def shift(self,char):
-        # if char > 96:
-        #     ans = (char - 97) % (122 - 97 + 1) + 97
-        # else:
-        #     ans = (char - 65) % (90 - 65 + 1) + 65
-        ans = (char - 97) % (122 - 97 + 1) + 97
-        return chr(ans)
-
-    def getInverseDeterminant(self, key):
-        det = round(np.linalg.det(key), 1) % 26
+    def getInverseDeterminant(self):
+        det = round(np.linalg.det(self.key), 1) % 26
         i = 1
         while True:
             if det*i % 26 == 1.0:
                 return i
             i += 1 
 
-    def getInverse(self, key):
-        dinv = self.getInverseDeterminant(key)
+    def getInverse(self):
+        dinv = self.getInverseDeterminant()
         kinv = np.zeros((self.size, self.size), dtype=np.int32)
         for i in range(self.size):
             for j in range(self.size):
-                kinv[i,j] = self.key[i]
-
-        exit(0)
+                x = np.delete(self.key, i, axis=0)
+                x = np.delete(x, j, axis=1)
+                det = x[0,0]*x[1,1] - x[1,0]*x[0,1]
+                kinv[i,j] =  int(pow(-1, i+j)) * det % 26
+        return (dinv * kinv.transpose()) % 26
+        
 
     def encrypt(self, message):
         message = message.replace(" ", "").lower()
@@ -52,7 +47,7 @@ class HillCipher:
             components = [message[i:i+self.size] for i in range(0, len(message), self.size)]
             output = []
             for msg in components:
-                plaintext = [ord(i) for i in msg]
+                plaintext = [ord(i)-97 for i in msg]
                 cipher = np.matmul(self.key, plaintext)
                 ciphertext = [chr(x%26 + 97) for x in cipher]
                 output.append("".join(ciphertext))
@@ -65,19 +60,19 @@ class HillCipher:
             print("Error: Length of the entered message should be a multiple of the length of key")
             return
         else:
-            # inverse = self.getInverse(self.key)
-            print(np.linalg.inv(self.key))
-            exit(0)
+            inverse = self.getInverse()
             components = [message[i:i+self.size] for i in range(0, len(message), self.size)]
-            ciphertext = [ord(i) for i in message.lower()]
-            cipher = np.matmul(np.linalg.inv(self.key), np.array(ciphertext))
-            # print(np.linalg.inv(self.key))
-            plaintext = [self.shift(int(x)) for x in cipher]
-            print("Encrypted Text: {}\nOriginal Text: {}".format(message, "".join(plaintext)))
+            output = []
+            for msg in components:
+                ciphertext = [ord(i)-97 for i in msg]
+                cipher = np.matmul(inverse, np.array(ciphertext))
+                plaintext = [chr(x%26+97) for x in cipher]
+                output.append("".join(plaintext))
+            print("Decrypted Text: {}\nOriginal Text: {}".format(message, "".join(output)))
 
 
 
 if __name__ == "__main__":
-    ob = HillCipher()
-    # ob.encrypt("Hey Are You May")
-    ob.decrypt("ioazfblkkwkm")
+    ob = HillCipher("alphabeta")    # Passing key in the constructor
+    ob.encrypt("Hey folkss")
+    # ob.decrypt("ovahuaaks")
