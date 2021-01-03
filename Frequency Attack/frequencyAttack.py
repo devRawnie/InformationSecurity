@@ -1,5 +1,5 @@
 from random import randint
-
+from re import findall
 class FAttack:
     def __init__(self, plainfile, cipherfile=None):
         self.key = randint(1, 27)
@@ -78,6 +78,10 @@ class FAttack:
 
 
     def breakCipher(self):
+        """
+            I got confused as to how to determine the K top possibilities. Currently I am 
+            submitting only one possibility by matching the frequency of corresponding letters.
+        """
         self.write_to_file(filename=self.cipherfile, heading="\n--->CRYPTANALYSIS\n", mode="a")        
 
         freq = self.generateFrequency(self.ciphertext)
